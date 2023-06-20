@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_background"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/item_background_rectangle"
+    android:elevation="4dp"
+    android:padding="8dp">
+
+    <CheckBox
+        android:id="@+id/task_checkbox"
+        android:button="@android:color/transparent"
+        android:background="@drawable/checkbox_tick"
+        android:foreground="@drawable/checkbox_tick_marked"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="2dp"
+        android:gravity="center_vertical" />
+
+    <TextView
+        android:id="@+id/task_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Task"
+        android:fontFamily="monospace"
+        android:textColor="@color/material_dynamic_neutral20"
+        android:layout_weight="1"
+        android:layout_marginStart="40dp"
+        android:textSize="22sp" />
+
+</FrameLayout>
