@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/item_background"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/item_background_rectangle"
     android:elevation="4dp"
     android:padding="8dp">
 
     <CheckBox
         android:id="@+id/task_checkbox"
-        android:button="@android:color/transparent"
-        android:background="@drawable/checkbox_tick"
-        android:foreground="@drawable/checkbox_tick_marked"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="2dp"
-        android:gravity="center_vertical" />
+        android:button="@android:color/transparent"
+        android:gravity="center_vertical"
+        app:checkedState="unchecked" />
 
     <TextView
         android:id="@+id/task_text"

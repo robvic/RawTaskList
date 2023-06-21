@@ -4,6 +4,9 @@ import android.app.AlertDialog
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -89,17 +92,15 @@ fun jsonToTaskList(json: String): TaskList {
     return Json.decodeFromString(json)
 }
 
+interface OnTaskCheckedChangeListener {
+    fun onTaskCheckedChange(position: Int, isChecked: Boolean)
+}
+
 class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val checkBox: CheckBox = itemView.findViewById(R.id.task_checkbox)
     val textView: TextView = itemView.findViewById(R.id.task_text)
 
     fun bind(task: Task) {
-        checkBox.setOnCheckedChangeListener(null) // Remove previous listener
-        checkBox.text = task.title
-        checkBox.isChecked = task.isCompleted
-        checkBox.setOnCheckedChangeListener { _, isChecked ->
-            task.isCompleted = isChecked
-        }
     }
 }
 
@@ -112,15 +113,17 @@ class TaskAdapter(private val tasks: MutableList<Task>, private val context: Con
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         holder.bind(tasks[position])
 
-        holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                holder.checkBox.background = ContextCompat.getDrawable(context, R.drawable.checkbox_tick_marked)
-                removeTask(position)
-            } else {
-                holder.checkBox.background = ContextCompat.getDrawable(context, R.drawable.checkbox_tick)
-            }
-        }
+        holder.checkBox.background = ContextCompat.getDrawable(context, R.drawable.checkbox_tick)
+        holder.checkBox.setOnCheckedChangeListener(null) // Remove previous listener
         holder.textView.text = tasks[position].title
+        holder.checkBox.isChecked = tasks[position].isCompleted
+        holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
+            holder.checkBox.background = ContextCompat.getDrawable(context, R.drawable.checkbox_tick_marked)
+            Handler(Looper.getMainLooper()).postDelayed({
+                tasks[position].isCompleted = isChecked
+                removeTask(position)
+            }, 500)
+        }
     }
 
     override fun getItemCount() = tasks.size
@@ -141,7 +144,7 @@ class TaskAdapter(private val tasks: MutableList<Task>, private val context: Con
 
     private fun removeTask(position: Int) {
         tasks.removeAt(position)
-        notifyItemRemoved(position)
+        notifyDataSetChanged()
         saveTasks()
     }
 }
